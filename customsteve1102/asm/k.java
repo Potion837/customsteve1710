@@ -1,0 +1,66 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  org.objectweb.asm.ClassReader
+ *  org.objectweb.asm.ClassVisitor
+ *  org.objectweb.asm.ClassWriter
+ *  org.objectweb.asm.Label
+ *  org.objectweb.asm.tree.AbstractInsnNode
+ *  org.objectweb.asm.tree.ClassNode
+ *  org.objectweb.asm.tree.InsnList
+ *  org.objectweb.asm.tree.JumpInsnNode
+ *  org.objectweb.asm.tree.LabelNode
+ *  org.objectweb.asm.tree.MethodInsnNode
+ *  org.objectweb.asm.tree.MethodNode
+ *  org.objectweb.asm.tree.VarInsnNode
+ */
+package customsteve.asm;
+
+import customsteve.asm.ASMPointer;
+import customsteve.asm.d;
+import customsteve.asm.e;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+public class k
+implements d {
+    String a;
+
+    @Override
+    public byte[] a(boolean isConfusion, String arg0, e names, byte[] bytes) {
+        ClassNode classNode = new ClassNode();
+        ClassReader classReader = new ClassReader(bytes);
+        classReader.accept((ClassVisitor)classNode, 0);
+        this.a = names.a(isConfusion, "RenderGlobal");
+        block0: for (MethodNode m2 : classNode.methods) {
+            if (!m2.name.equals(names.a(isConfusion, "RenderGlobal.renderEntities")) || !m2.desc.equals("(L" + names.a(isConfusion, "EntityLivingBase") + ";L" + names.a(isConfusion, "ICamera") + ";F)V")) continue;
+            for (int i2 = 0; i2 < m2.instructions.size(); ++i2) {
+                AbstractInsnNode ain = m2.instructions.get(i2);
+                if (!(ain instanceof JumpInsnNode) || ((JumpInsnNode)ain).getOpcode() != 153 || !((ain = m2.instructions.get(i2 + 5)) instanceof JumpInsnNode) || ((JumpInsnNode)ain).getOpcode() != 166 || !((ain = m2.instructions.get(i2 + 5 + 5)) instanceof JumpInsnNode) || ((JumpInsnNode)ain).getOpcode() != 154 || !((ain = m2.instructions.get(i2 + 5 + 5 + 5)) instanceof JumpInsnNode) || ((JumpInsnNode)ain).getOpcode() != 153 || !((ain = m2.instructions.get(i2 + 5 + 5 + 5 + 13)) instanceof JumpInsnNode) || ((JumpInsnNode)ain).getOpcode() != 153) continue;
+                int p2 = i2 - 1;
+                InsnList inject = new InsnList();
+                inject.add((AbstractInsnNode)new VarInsnNode(25, 20));
+                inject.add((AbstractInsnNode)new VarInsnNode(23, 3));
+                inject.add((AbstractInsnNode)new MethodInsnNode(184, ASMPointer.class.getName().replace(".", "/"), "i", "(L" + names.a(isConfusion, "Entity") + ";F)V"));
+                inject.add((AbstractInsnNode)new LabelNode(new Label()));
+                m2.instructions.insertBefore(m2.instructions.get(p2), inject);
+                continue block0;
+            }
+        }
+        ClassWriter writer = new ClassWriter(1);
+        classNode.accept((ClassVisitor)writer);
+        return writer.toByteArray();
+    }
+}
+
